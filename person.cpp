@@ -18,6 +18,7 @@
 #include "eventQ.h"
 #include "LoadParams.h"
 
+
 //// --- OUTSIDE INFORMATION --- ////
 extern double   *p_GT;
 extern double   StartYear;
@@ -69,6 +70,7 @@ extern int*     CancerAgeArrayMax;
 extern double** HPVarray;
 
 extern double   MortAdj;
+
 
 //// --- Important Internal informtaion --- ////
 vector <float> HIVReservoir(0);
@@ -682,9 +684,10 @@ void person::GetMyDateNCD(){
                 
             }
             
-            
             NCD_DatesVector.push_back(DateNCD);
             ncd++;                                                 // Lets do the next NCD
+            
+            
         }
     }
     E(cout << "We finished assigning NCDs!" << endl;)

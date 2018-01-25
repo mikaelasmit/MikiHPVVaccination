@@ -34,11 +34,13 @@ using namespace std;
 int country=1;
 
 // STEP 2 --- NAME THE DIRECTORY AND TAG FOR THE OUTPUT FILE
-string OutputFileDirectory="/Users/mc1405/Dropbox/KenyModel_Vacc/HIVModelZimbabwe";
-string ParamDirectory1=OutputFileDirectory + "/Kenya/";
-string ParamDirectory2=OutputFileDirectory + "/Zimbabwe/";
-string ParamDirectory3=OutputFileDirectory + "/Malawi/";;
-string ParamDirectory4=OutputFileDirectory + "/Kenya_UG/";;
+string InputFileDirectory="/Users/mc1405/Dropbox/All Work/Ageing in Kenya and Zimbabwe - project/Model_wHPV Miki copy/Model_Africa_HPV/HIVModelZimbabwe";
+string OutputFileDirectory="//Users/mc1405/Dropbox/All Work/Ageing in Kenya and Zimbabwe - project/Model_wHPV Miki copy/MATLAB_Pablo copy/MATLAB copy/Zimbabwe Results HIV/NCDHIVcheck_OFF.csv";
+                         
+string ParamDirectory1=InputFileDirectory + "/Kenya/";
+string ParamDirectory2=InputFileDirectory + "/Zimbabwe/";
+string ParamDirectory3=InputFileDirectory + "/Malawi/";;
+string ParamDirectory4=InputFileDirectory + "/Kenya_UG/";;
 
 // STEP 3 --- AT WHAT FACTOR SHOULD WE RUN THE POPULATION?
 int factor=100; //county = 1, country = 100
@@ -130,9 +132,9 @@ vector<event *> Events;                                                         
 //////////                      Function for random number generator between min and max                        //////////
 /////////                       !!!!Note: if min=0 and max=4 it will generate 0,1,2,3,4                         //////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-double RandomMinMax_3(int min, int max){                                                                        //////////
-    return rand()%(max-min+1)+min;                                                                              //////////
-}                                                                                                               //////////
+
+
+//////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -144,10 +146,6 @@ double RandomMinMax_3(int min, int max){                                        
 int main(){
     
     srand(time(NULL));														      // Random Number generator using PC time
-    
-    cout << MortRisk << endl;
-    cout << "Testing changes" << endl;
-    
     
     cout << endl << "Jambo / Hello / Hola!" << endl << endl ;								  // Check if model is running
     
@@ -289,8 +287,8 @@ int main(){
     
     
     
-    /* for (int i=0; i<total_population; i++) {								// Note: If adding more variables to be output, need to adapt the %x
-     fprintf(ProjectZim,"%d, %d, %f, %f, %d, %d, %f, %d, %f, %d, %d, %f, %f, %f, %f, %f, %d, %f, %f, %f, %f, %f, %f, %f, %d, %f, %f, %f, %f, %f, %f, %f, %f, %d, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %d, %d \n",
+     for (int i=0; i<total_population; i++) {								// Note: If adding more variables to be output, need to adapt the %x
+     fprintf(ProjectZim,"%d, %d, %f, %f, %d, %d, %f, %d, %f, %d, %d, %f, %f, %f, %f, %f, %d, %f, %f, %f, %f, %f, %f, %f, %d, %f, %f, %f, %f, %f, %f, %f, %f, %d, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f \n",
      MyArrayOfPointersToPeople[i]->PersonID,
      MyArrayOfPointersToPeople[i]->Sex,
      MyArrayOfPointersToPeople[i]->DoB,
@@ -339,7 +337,9 @@ int main(){
      MyArrayOfPointersToPeople[i]->HC
      
      );}
-     fclose(ProjectZim);*/
+     fclose(ProjectZim);
+    
+    cout << "MI: " << MyArrayOfPointersToPeople[1]->MI << endl;
     
     // COUNT OUTPUT FOR FITTING
     int count_2016deaths=0;
@@ -424,6 +424,7 @@ int main(){
     
     cout << "Least Square " << sum_MinLik << endl;
     
+
     
     
     
