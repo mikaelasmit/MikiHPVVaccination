@@ -17,6 +17,8 @@
 #include "errorcoutmacro.h"
 #include "eventQ.h"
 #include "LoadParams.h"
+#include "HPVInfection.hpp"
+#include "NCD.hpp"
 
 
 //// --- OUTSIDE INFORMATION --- ////

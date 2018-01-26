@@ -34,8 +34,9 @@ using namespace std;
 int country=1;
 
 // STEP 2 --- NAME THE DIRECTORY AND TAG FOR THE OUTPUT FILE
-string InputFileDirectory="/Users/mc1405/Dropbox/All Work/Ageing in Kenya and Zimbabwe - project/Model_wHPV Miki copy/Model_Africa_HPV/HIVModelZimbabwe";
-string OutputFileDirectory="//Users/mc1405/Dropbox/All Work/Ageing in Kenya and Zimbabwe - project/Model_wHPV Miki copy/MATLAB_Pablo copy/MATLAB copy/Zimbabwe Results HIV/NCDHIVcheck_OFF.csv";
+string InputFileDirectory="/Users/Mikaela/Dropbox/KenyModel_Vacc/HIVModelZimbabwe";
+///Users/Mikaela/Dropbox/KenyModel_Vacc/HIVModelZimbabwe/Kenya
+string OutputFileDirectory="/Users/Mikaela/Dropbox/All Work/Ageing in Kenya and Zimbabwe - project/MATLAB_Pablo copy/MATLAB copy/Zimbabwe Results HIV/NCDcheck.csv";
                          
 string ParamDirectory1=InputFileDirectory + "/Kenya/";
 string ParamDirectory2=InputFileDirectory + "/Zimbabwe/";
@@ -118,6 +119,29 @@ double      OtherCan_d;                                                         
 extern double MortRisk[6];              // Adjust in eventsfunctions.cpp                                        //////////
 extern double MortRisk_Cancer[5];       // Adjust in eventsfunctions.cpp                                        //////////
 string ParamDirectory;                                                                                          //////////
+double Risk_DiabHC;                                        // Having high cholesterol given diabtes etc ...
+double Risk_DiabHT;
+double Risk_DiabCKD;
+double Risk_DiabCVD;
+
+double Risk_HCHT;
+double Risk_HCCVD;
+
+double Risk_HTCKD;
+double Risk_HTCVD;
+
+double Risk_NCD_Diabetes[5];
+int relatedNCDs_Diab[5];
+int nr_NCD_Diab;
+
+
+double Risk_NCD_HT[3];
+int relatedNCDs_HT[3];
+int nr_NCD_HT;
+
+double Risk_NCD_HC[3];
+int relatedNCDs_HC[3];
+int nr_NCD_HC;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////                                  POINTER TO EVENT QUEUE                                              //////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
