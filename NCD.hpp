@@ -17,13 +17,14 @@ using namespace std;
 
 
 //// --- NCD Events ---
-void EventMyHyptenDate(person *MyPointerToPerson);			// Function executed when person develops hypertension
-void EventMyHypcholDate(person *MyPointerToPerson);			// Function executed when person develops high-cholesterol
-void EventMyDepressionDate(person *MyPointerToPerson);		// Function executed when person develops depression
 void EventMyAsthmaDate(person *MyPointerToPerson);			// Function executed when person develops asthma
-void EventMyStrokeDate(person *MyPointerToPerson);			// Function executed when person develops stroke
-void EventMyMIDate(person *MyPointerToPerson);              // Function executed when person develops MI
+void EventMyCKDDate(person *MyPointerToPerson);             // Function executed when person develops CKD
+void EventMyDepressionDate(person *MyPointerToPerson);		// Function executed when person develops depression
 void EventMyDiabetesDate(person *MyPointerToPerson);        // Function executed when person develops diabetes
+void EventMyHypcholDate(person *MyPointerToPerson);			// Function executed when person develops high-cholesterol
+void EventMyHyptenDate(person *MyPointerToPerson);			// Function executed when person develops hypertension
+void EventMyMIDate(person *MyPointerToPerson);              // Function executed when person develops MI
+void EventMyStrokeDate(person *MyPointerToPerson);			// Function executed when person develops stroke
 
 
 /// --- Cancer events ---
@@ -35,5 +36,4 @@ void EventMyOesoDate(person *MyPointerToPerson);            // Function executed
 void EventMyProstateDate(person *MyPointerToPerson);		// Function executed when person develops prostate cancer
 void EventMyOtherCanDate(person *MyPointerToPerson);        // Function executed when person develops other cancers
 
-void EventMyCKDDate(person *MyPointerToPerson);             // Function executed when person develops CKD
 

@@ -13,14 +13,12 @@
 using namespace std;
 
 
-
 //// --- CREATING PEOPLE --- ////
 
 class person{										// Classes are considered private unless stated otherwise
 public:
     
     person();										// Class constructor or calling function for person
-    
     
     //// --- Persons Characteristics --- ////
     int PersonID;									// -- Basic variables --
@@ -39,10 +37,14 @@ public:
     int Alive;
     int AgeAtDeath;
     
-    double HIV; // -- Variables related to HIV --
+    double HIV;                                     // -- Variables related to HIV --
+    int CD4_cat_start;
+    int CD4_cat_ARTstart;
+    int CD4_cat;
+    vector<double> CD4_change;
+    int ART;
     
-    // --- Variables related to HPV infection ---
-    int HPV_Status;
+    int HPV_Status;                                 // --- Variables related to HPV infection ---
     double HPV_DateofInfection;
     double CIN1_DateofProgression;
     double CIN2_3_DateofProgression;
@@ -53,20 +55,13 @@ public:
     double CIN2_3_DateofRecovery;
     double CIS_DateofRecovery;
     
-    int HPVvaccination_status;
+    int HPVvaccination_status;                      // --- Variabled relating to HPV vaccination
     double HPVvaccination_date;
     
-    // --- Variables related to CC interventions ---
-    int CC_Screening_Count;
+    int CC_Screening_Count;                         // --- Variables related to CC interventions ---
     int CC_ScreenOutcome;
     int CC_CryoOutcome;
     double Re_ScreenOn;
-    
-    int CD4_cat_start;
-    int CD4_cat_ARTstart;
-    int CD4_cat;
-    vector<double> CD4_change;
-    int ART;
     
     double HT;                                      // -- Variables related to NCDs --
     int HT_status;

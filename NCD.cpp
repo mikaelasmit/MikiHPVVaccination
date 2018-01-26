@@ -30,6 +30,7 @@
 using namespace std;
 
 // hard code to remove
+// 0. Move NCD risk array snad mortality array to country param
 // 1. ncd_index
 // 2. CauseOfDeath
 // 3. p_mort
@@ -56,6 +57,7 @@ extern double Risk_DiabHC;                      // NCD common causal pathways
 extern double Risk_DiabHT;
 extern double Risk_DiabCKD;
 extern double Risk_DiabCVD;
+
 extern double Risk_HCHT;
 extern double Risk_HCCVD;
 extern double Risk_HTCKD;
@@ -69,6 +71,25 @@ extern int nr_NCD_HT;
 extern double Risk_NCD_HC[3];
 extern int relatedNCDs_HC[3];
 extern int nr_NCD_HC;
+
+//// Tidy up
+double Risk_NCD_Diabetes[5]={Risk_DiabHT, Risk_DiabCVD, Risk_DiabCKD, Risk_DiabCVD, Risk_DiabHC};
+int relatedNCDs_Diab[5]={0, 3, 5, 6, 7};
+int nr_NCD_Diab=sizeof(relatedNCDs_Diab)/sizeof(relatedNCDs_Diab[0]);
+
+
+double Risk_NCD_HT[3]={Risk_HTCVD, Risk_HTCKD, Risk_HTCVD};
+int relatedNCDs_HT[3]={3, 5, 6};
+int nr_NCD_HT=sizeof(relatedNCDs_HT)/sizeof(relatedNCDs_HT[0]);
+
+double Risk_NCD_HC[3]={Risk_HCHT, Risk_HCCVD, Risk_HCCVD};
+int relatedNCDs_HC[3]={0, 3, 6};
+int nr_NCD_HC=sizeof(relatedNCDs_HC)/sizeof(relatedNCDs_HC[0]);
+
+double MortRisk[6]= {0, 0, 0.85, 1.3, 1.1, 0.8}; //{0.087, 0, 1.4, 670.87, 12.23, 5};         // Original values from Smith et al Factors associated with : 1.52 (HT), 1.77 (diabetes)
+double MortRisk_Cancer[5]= {1, 1, 1, 1, 1.05};                   //{0.087, 0, 1.4, 670.87, 12.23};   // Both this and above needs to be fitted
+
+ 
 
 
 //// --- Important Functions --- ////

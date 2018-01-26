@@ -81,6 +81,10 @@ int         UN_Pop;                                                             
 int         init_pop;                                                                                           //////////
 int         total_population;                                                                                   //////////
 double      Sex_ratio;
+int minAgeBirth;
+int maxAgeBirth;
+
+
 double      HPV_Prevalence;
 double      HPV_Screening_coverage;
 extern double CIN1_Rates[2];
@@ -130,18 +134,6 @@ double Risk_HCCVD;
 double Risk_HTCKD;
 double Risk_HTCVD;
 
-double Risk_NCD_Diabetes[5];
-int relatedNCDs_Diab[5];
-int nr_NCD_Diab;
-
-
-double Risk_NCD_HT[3];
-int relatedNCDs_HT[3];
-int nr_NCD_HT;
-
-double Risk_NCD_HC[3];
-int relatedNCDs_HC[3];
-int nr_NCD_HC;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////                                  POINTER TO EVENT QUEUE                                              //////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
