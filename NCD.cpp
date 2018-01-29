@@ -62,34 +62,19 @@ extern double Risk_HCHT;
 extern double Risk_HCCVD;
 extern double Risk_HTCKD;
 extern double Risk_HTCVD;
-extern double Risk_NCD_Diabetes[5];
-extern int relatedNCDs_Diab[5];
+
+extern double Risk_NCD_Diabetes[];
+extern int relatedNCDs_Diab[];
 extern int nr_NCD_Diab;
-extern double Risk_NCD_HT[3];
-extern int relatedNCDs_HT[3];
+
+extern double Risk_NCD_HT[];
+extern int relatedNCDs_HT[];
 extern int nr_NCD_HT;
-extern double Risk_NCD_HC[3];
-extern int relatedNCDs_HC[3];
+
+extern double Risk_NCD_HC[];
+extern int relatedNCDs_HC[];
 extern int nr_NCD_HC;
 
-//// Tidy up
-double Risk_NCD_Diabetes[5]={Risk_DiabHT, Risk_DiabCVD, Risk_DiabCKD, Risk_DiabCVD, Risk_DiabHC};
-int relatedNCDs_Diab[5]={0, 3, 5, 6, 7};
-int nr_NCD_Diab=sizeof(relatedNCDs_Diab)/sizeof(relatedNCDs_Diab[0]);
-
-
-double Risk_NCD_HT[3]={Risk_HTCVD, Risk_HTCKD, Risk_HTCVD};
-int relatedNCDs_HT[3]={3, 5, 6};
-int nr_NCD_HT=sizeof(relatedNCDs_HT)/sizeof(relatedNCDs_HT[0]);
-
-double Risk_NCD_HC[3]={Risk_HCHT, Risk_HCCVD, Risk_HCCVD};
-int relatedNCDs_HC[3]={0, 3, 6};
-int nr_NCD_HC=sizeof(relatedNCDs_HC)/sizeof(relatedNCDs_HC[0]);
-
-double MortRisk[6]= {0, 0, 0.85, 1.3, 1.1, 0.8}; //{0.087, 0, 1.4, 670.87, 12.23, 5};         // Original values from Smith et al Factors associated with : 1.52 (HT), 1.77 (diabetes)
-double MortRisk_Cancer[5]= {1, 1, 1, 1, 1.05};                   //{0.087, 0, 1.4, 670.87, 12.23};   // Both this and above needs to be fitted
-
- 
 
 
 //// --- Important Functions --- ////
@@ -514,6 +499,10 @@ void EventMyHyptenDate(person *MyPointerToPerson)
                 double YearFraction=(RandomMinMax_2(1,12))/12.1;
                 DateNCD=MyPointerToPerson->DoB+i+YearFraction;
             }
+            
+            cout << "ncd nr " << ncd_nr << endl;
+            cout << "related NCD " << relatedNCDs_HT[ncd_nr] << endl;
+            cout << "risk increase: " << Risk_NCD_HT[ncd_nr] << endl;
             
             // 4.2 Lets see if this pushed forward the existing NCD date
             if (DateNCD>=*p_GT && DateNCD<MyPointerToPerson->NCD_DatesVector.at(relatedNCDs_HT[ncd_nr]))

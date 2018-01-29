@@ -108,20 +108,6 @@ extern int ageAdult;
 extern double ARTbuffer;
 
 
-//// Tidy up
-extern double Risk_NCD_Diabetes[5];
-extern int relatedNCDs_Diab[5];
-extern int nr_NCD_Diab;
-
-
-extern double Risk_NCD_HT[3];
-extern int relatedNCDs_HT[3];
-extern int nr_NCD_HT;
-
-extern double Risk_NCD_HC[3];
-extern int relatedNCDs_HC[3];
-extern int nr_NCD_HC;
-
 
 // Count to compare to sum and CD4-specific numbers
 int count_ARTMen[7]={0, 0, 0, 0, 0, 0, 0};        // Count by CD4 count category

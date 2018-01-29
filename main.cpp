@@ -24,9 +24,18 @@
 #include "CParamReader.hpp"
 #include "CountryParams.hpp"
 #include "Intervention.hpp"
+#include "NCD.hpp"
 
 
 using namespace std;
+
+// TIDY UP
+// Clena up main!
+// Clean up NCD risk from NCD.hpp
+// Clean up person.cpp
+// Add ART events for HPV vacciantion for ART
+// Clean eventfunction
+// clean intervemtiom
 
 //// --- Control Centre --- ////
 // STEP 1 --- SELECT THE COUNTRY TO RUN THE MODEL
@@ -34,9 +43,9 @@ using namespace std;
 int country=1;
 
 // STEP 2 --- NAME THE DIRECTORY AND TAG FOR THE OUTPUT FILE
-string InputFileDirectory="/Users/Mikaela/Dropbox/KenyModel_Vacc/HIVModelZimbabwe";
+string InputFileDirectory="/Users/mc1405/Dropbox/KenyModel_Vacc/HIVModelZimbabwe";
 ///Users/Mikaela/Dropbox/KenyModel_Vacc/HIVModelZimbabwe/Kenya
-string OutputFileDirectory="/Users/Mikaela/Dropbox/All Work/Ageing in Kenya and Zimbabwe - project/MATLAB_Pablo copy/MATLAB copy/Zimbabwe Results HIV/NCDcheck.csv";
+string OutputFileDirectory="/Users/mc1405/Dropbox/All Work/Ageing in Kenya and Zimbabwe - project/MATLAB_Pablo copy/MATLAB copy/Zimbabwe Results HIV/NCDcheck.csv";
                          
 string ParamDirectory1=InputFileDirectory + "/Kenya/";
 string ParamDirectory2=InputFileDirectory + "/Zimbabwe/";
@@ -134,6 +143,9 @@ double Risk_HCCVD;
 double Risk_HTCKD;
 double Risk_HTCVD;
 
+double MortRisk[6]= {0, 0, 0.85, 1.3, 1.1, 0.8}; //{0.087, 0, 1.4, 670.87, 12.23, 5};         // Original values from Smith et al Factors associated with : 1.52 (HT), 1.77 (diabetes)
+double MortRisk_Cancer[5]= {1, 1, 1, 1, 1.05};                   //{0.087, 0, 1.4, 670.87, 12.23};   // Both this and above needs to be fitted
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////                                  POINTER TO EVENT QUEUE                                              //////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -169,15 +181,16 @@ int main(){
     
     cout << "Country files are being accessed..." << endl << endl;
     
+  
     // Call the function that loads country-specific parameters
     loadCountryParams(country);
     cout << "Population was of " << UN_Pop << " in 1950, with a sex ratio of " << Sex_ratio << ", per UN estimates." << endl;
     cout << "Model calibrated to: 1) Run at a " << factor << "th of the population (N=" << init_pop << "); 2) Adult = "
     << ageAdult << " years of age on; 3) Mortality adjustment = "
     << MortAdj << "; 4) ART buffer = " << ARTbuffer << "; 5) ART was introduced in " << ART_start_yr << endl << endl;
+   
     
-    
-    
+
     
     //// --- Load parameters --- ////
     cout << "Section 1 - We are loading the arrays" << endl;

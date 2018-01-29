@@ -87,6 +87,17 @@ extern double Risk_HCCVD;
 extern double Risk_HTCKD;
 extern double Risk_HTCVD;
 
+double Risk_NCD_Diabetes[5];
+double relatedNCDs_Diab[5];
+int nr_NCD_Diab;
+
+double Risk_NCD_HT[3];
+int relatedNCDs_HT[3];
+int nr_NCD_HT;
+
+double Risk_NCD_HC[3];
+int relatedNCDs_HC[3];
+int nr_NCD_HC;
 
 
 /////////////////// FUNCTION: IF LOOP FOR COUNTRY-SPECIFIC PARAMETERS //////////////////////
@@ -113,6 +124,42 @@ void loadCountryParams(int x){
         Risk_HCCVD=1.41;
         Risk_HTCKD=1.69;
         Risk_HTCVD=1.26;
+        
+        
+        // Diabetes related NCD 
+        int size_diabetes=5;
+        double Temp1_diab[5]={Risk_DiabHT, Risk_DiabCVD, Risk_DiabCKD, Risk_DiabCVD, Risk_DiabHC};
+        double Temp2_diab[5]={0, 3, 5, 6, 7};
+        for (int i=0; i<size_diabetes; i++){
+            Risk_NCD_Diabetes[i]=Temp1_diab[i];
+            relatedNCDs_Diab[i]=Temp2_diab[i];
+        }
+        nr_NCD_Diab=sizeof(relatedNCDs_Diab)/sizeof(relatedNCDs_Diab[0]);
+        
+        int size_HT=3;
+        double Temp1_HT[3]={Risk_HTCVD, Risk_HTCKD, Risk_HTCVD};
+        double Temp2_HT[3]={3, 5, 6};
+        for (int i=0; i<size_HT; i++){
+            Risk_NCD_HT[i]=Temp1_HT[i];
+            cout << "risk increase: " << Risk_NCD_HT[i] << endl;
+            relatedNCDs_HT[i]=Temp2_HT[i];
+            cout << "related NCD " << relatedNCDs_HT[i] << endl;
+        }
+        nr_NCD_HT=sizeof(relatedNCDs_HT)/sizeof(relatedNCDs_HT[0]);
+        cout << "size " << nr_NCD_HT << endl;
+        
+        int size_HC=3;
+        double Temp1_HC[3]={Risk_HCHT, Risk_HCCVD, Risk_HCCVD};
+        double Temp2_HC[3]={0, 3, 6};
+        for (int i=0; i<size_HC; i++){
+            Risk_NCD_HC[i]=Temp1_HC[i];
+            cout << "risk increase: " << Risk_NCD_HC[i] << endl;
+            relatedNCDs_HC[i]=Temp2_HC[i];
+            cout << "related NCD " << relatedNCDs_HC[i] << endl;
+        }
+        nr_NCD_HC=sizeof(relatedNCDs_HC)/sizeof(relatedNCDs_HC[0]);
+        cout << "size " << nr_NCD_HC << endl;
+        
         
         // HIV parameters
         ART_start_yr=2004;
