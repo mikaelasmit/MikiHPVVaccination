@@ -26,174 +26,80 @@
 #include "Intervention.hpp"
 #include "NCD.hpp"
 
-
 using namespace std;
 
 // TIDY UP
-// Clena up main!
 // Clean up NCD risk from NCD.hpp
 // Clean up person.cpp
 // Add ART events for HPV vacciantion for ART
 // Clean eventfunction
 // clean intervemtiom
+// make sure that we DO book in events even if they happen after death!!
 
-//// --- Control Centre --- ////
-// STEP 1 --- SELECT THE COUNTRY TO RUN THE MODEL
-// 1=KENYA      2=ZIMBABWE      3=MALAWI      4=KENYA - UG
-int country=1;
+//// --- 1. Choose country --- ////
+int country=1;                  // 1=KENYA      2=ZIMBABWE      3=MALAWI      4=KENYA - UG
 
-// STEP 2 --- NAME THE DIRECTORY AND TAG FOR THE OUTPUT FILE
+//// --- 2. Complete file paths --- ////
 string InputFileDirectory="/Users/mc1405/Dropbox/KenyModel_Vacc/HIVModelZimbabwe";
-///Users/Mikaela/Dropbox/KenyModel_Vacc/HIVModelZimbabwe/Kenya
 string OutputFileDirectory="/Users/mc1405/Dropbox/All Work/Ageing in Kenya and Zimbabwe - project/MATLAB_Pablo copy/MATLAB copy/Zimbabwe Results HIV/NCDcheck.csv";
-                         
-string ParamDirectory1=InputFileDirectory + "/Kenya/";
-string ParamDirectory2=InputFileDirectory + "/Zimbabwe/";
-string ParamDirectory3=InputFileDirectory + "/Malawi/";;
-string ParamDirectory4=InputFileDirectory + "/Kenya_UG/";;
 
-// STEP 3 --- AT WHAT FACTOR SHOULD WE RUN THE POPULATION?
-int factor=100; //county = 1, country = 100
 
-// STEP 4 --- CHOOSE INTERVENTIONS DETAILS
+//// --- 3. Interventions Switch and Details --- ////
 int yearintervention_start=2018;
 int int_HPVvaccination=1;
-
-// vaccination parameter
 int age_HPVvaccination=9;
 
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////                                   MODIFY IF NEEDED PARAMETERS                                        //////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-double StartYear=1950;                                                                                          //////////
-int EndYear=2035;                                                                                               //////////
+//// --- 3. Central Model Parameters --- ////
+double StartYear=1950;
+int    EndYear=2035;
+int    factor=100;                 // Ffraction of population run in the mode
 const long long int final_number_people=100000000;
 
-//////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////                      DO NOT MODIFY - CRITICAL PARAMETERS AND FUNCTIONS                               //////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////                                                POINTERS                                                //////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-double      *p_GT;                                                                                              //////////
-int         *p_PY;                                                                                              //////////
-int         PY=0;                                                                                               //////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////                    --- COUNTRY-SPECIFIC PARAMETERS: ADJUST IN CountryParams.cpp!!!!                    //////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int         UN_Pop;                                                                                             //////////
-int         init_pop;                                                                                           //////////
-int         total_population;                                                                                   //////////
-double      Sex_ratio;
-int minAgeBirth;
-int maxAgeBirth;
-
-
-double      HPV_Prevalence;
-double      HPV_Screening_coverage;
-extern double CIN1_Rates[2];
-extern double CIN2_3_Rates[2];
-extern double      CIS_Rates[2];
-extern double      ICC_Rates[2];
-double      no_hpv_infection;
-double      HPV_Status_HPV;
-double      HPV_Status_CIN1;
-double      HPV_Status_CIN2_3;
-double      HPV_Status_CIS;
-double      HPV_Status_ICC;
-double      HPV_Status_Recovered;
-double      hpv_date_after_death;
-
-
-int         ageAdult;                                                                                           //////////
-int         age_atrisk_hpv;
+//// --- Pointers and external information
+double      *p_GT;
+int         *p_PY;
+int         PY=0;
 int         age_tostart_CCscreening;
-double      ARTbuffer;                                                                                          //////////
-double      MortAdj;                                                                                            //////////
-int         ART_start_yr;                                                                                       //////////
-double      background_d;                                                                                       //////////
-double      HIV_d;                                                                                              //////////
-double      IHD_d;                                                                                              //////////
-double      Depression_d;                                                                                       //////////
-double      Asthma_d;                                                                                           //////////
-double      Stroke_d;                                                                                           //////////
-double      Diabetes_d;                                                                                         //////////
-double      CKD_d;                                                                                              //////////
-double      Colo_d;                                                                                             //////////
-double      Liver_d;                                                                                            //////////
-double      Oeso_d;                                                                                             //////////
-double      Prostate_d;                                                                                         //////////
-double      OtherCan_d;                                                                                         //////////
-extern double MortRisk[6];              // Adjust in eventsfunctions.cpp                                        //////////
-extern double MortRisk_Cancer[5];       // Adjust in eventsfunctions.cpp                                        //////////
-string ParamDirectory;                                                                                          //////////
-double Risk_DiabHC;                                        // Having high cholesterol given diabtes etc ...
-double Risk_DiabHT;
-double Risk_DiabCKD;
-double Risk_DiabCVD;
+extern int  total_population;
+priority_queue<event*, vector<event*>, timeComparison> *p_PQ;
+person** MyArrayOfPointersToPeople = new person*[final_number_people];
+vector<event *> Events;
 
-double Risk_HCHT;
-double Risk_HCCVD;
-
-double Risk_HTCKD;
-double Risk_HTCVD;
+extern double background_d;        // Mortality parameters
+extern double HIV_d;
+extern double IHD_d;
+extern double Depression_d;
+extern double Asthma_d;
+extern double Stroke_d;
+extern double Diabetes_d;
+extern double CKD_d;
+extern double Colo_d;
+extern double Liver_d;
+extern double Oeso_d;
+extern double Prostate_d;
+extern double OtherCan_d;
+extern double MortAdj;
 
 double MortRisk[6]= {0, 0, 0.85, 1.3, 1.1, 0.8}; //{0.087, 0, 1.4, 670.87, 12.23, 5};         // Original values from Smith et al Factors associated with : 1.52 (HT), 1.77 (diabetes)
 double MortRisk_Cancer[5]= {1, 1, 1, 1, 1.05};                   //{0.087, 0, 1.4, 670.87, 12.23};   // Both this and above needs to be fitted
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////                                  POINTER TO EVENT QUEUE                                              //////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-priority_queue<event*, vector<event*>, timeComparison> *p_PQ;				                                    //////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////                      person** is a POINTER to a pointer (address)                                    //////////
-//////////                      'new person*' is a pointer to the actual person below                           //////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-person** MyArrayOfPointersToPeople = new person*[final_number_people];                                          //////////
-vector<event *> Events;                                                                                         //////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////                      Function for random number generator between min and max                        //////////
-/////////                       !!!!Note: if min=0 and max=4 it will generate 0,1,2,3,4                         //////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-//////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////                        LET'S RUN THE MAIN FUNCTION OF THE MODEL!!!                                   //////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 int main(){
     
-    srand(time(NULL));														      // Random Number generator using PC time
+    srand(time(NULL));														 // Random Number generator using PC time
     
-    cout << endl << "Jambo / Hello / Hola!" << endl << endl ;								  // Check if model is running
+    cout << endl << "Jambo / Hello / Hola!" << endl << endl ;                // Check if model is running
     
-    getParamsString(country); // Gets the ParamDirectory string to pull country-specific files
-    
-    cout << "Country files are being accessed..." << endl << endl;
-    
-  
-    // Call the function that loads country-specific parameters
-    loadCountryParams(country);
-    cout << "Population was of " << UN_Pop << " in 1950, with a sex ratio of " << Sex_ratio << ", per UN estimates." << endl;
-    cout << "Model calibrated to: 1) Run at a " << factor << "th of the population (N=" << init_pop << "); 2) Adult = "
-    << ageAdult << " years of age on; 3) Mortality adjustment = "
-    << MortAdj << "; 4) ART buffer = " << ARTbuffer << "; 5) ART was introduced in " << ART_start_yr << endl << endl;
-   
-    
-
     
     //// --- Load parameters --- ////
-    cout << "Section 1 - We are loading the arrays" << endl;
+    cout << "Section 1 - Loading country related items.  " << endl << endl;
+    getParamsString(country);                                                // Gets the ParamDirectory string to pull country-specific files
+    loadCountryParams(country);                                              // Call the function that loads country-specific parameters
+    
+    
+    cout << "Section 2 - We are loading the arrays.  " << endl;
     // Load HIV Arrays
     loadCD4StartArray();
     loadCD4ProgArray();
@@ -224,10 +130,7 @@ int main(){
     loadCancerArray();
     loadHPVarray();
     
-    
-    
-    
-    cout << "Section 2 - All arrays loaded successfully" << endl;
+    cout << "Section 3 - All arrays and country-specific items were loaded successfully.  " << endl;
     
     
     //// ---- Warning Code --- ////
@@ -243,12 +146,11 @@ int main(){
     priority_queue<event*, vector<event*>, timeComparison> iQ;				// Define the Priority Q
     p_PQ=&iQ;																// Define pointer to event Q
     p_PY=&PY;
-    cout << p_PY << endl;
     
     
     //// --- MAKING POPULATION--- ////
     
-    cout << "Section 3 - We're going to create a population" << endl;
+    cout << "Section 4 - We're going to create a population.  " << endl;
     
     for(int i=0; i<total_population; i++){									// REMEMBER: this needs to stay "final_number_people" or it will give error with CSV FILES!!!!
         MyArrayOfPointersToPeople[i]=new person();							// The 'new person' the actual new person
@@ -269,39 +171,35 @@ int main(){
         (MyArrayOfPointersToPeople[i])->GetMyDateOfHIVInfection();           // ---Get date of HIV infection ---
     }
     
-    
-    cout << "Section 4 - We've finished creating a population" << endl;
+    cout << "Section 5 - We've finished creating a population.  " << endl;
     
     
     //// --- EVENTQ --- ////
-    cout << "Section 5 - We are going to create key events" << endl;
+    cout << "Section 6 - We are going to create key events.  " << endl;
     
-    event * TellNewYear = new event;										// --- Tell me every time  a new year start ---
+    event * TellNewYear = new event;										//// --- Tell me every time  a new year start --- ////
     Events.push_back(TellNewYear);
     TellNewYear->time = StartYear;
     TellNewYear->p_fun = &EventTellNewYear;
     iQ.push(TellNewYear);
     
-    event * InterventionEvent = new event;
+    event * InterventionEvent = new event;                                  //// --- Push in interventions ---////
     Events.push_back(InterventionEvent);
     InterventionEvent->time = yearintervention_start;
     InterventionEvent->p_fun = &EventStartIntervention;
     iQ.push(InterventionEvent);
     
-    
-    
-    /// --- Screen all women who start ART for Cervical Cancer each year --- ///
-    event * CC_First_screen = new event;
+    event * CC_First_screen = new event;                                    //// --- Cervical Cancer screening --- ///
     Events.push_back(CC_First_screen);
     CC_First_screen->time = 2018;
     CC_First_screen->p_fun = &EventMyFirst_VIA_Screening;
     iQ.push(CC_First_screen);
-    //p_PQ->push(CC_First_screen);
+    
     
     //// --- LETS RUN THE EVENTQ --- ////
     cout << endl << endl << "The characteristics of the event queue:" << endl;
-    cout << "the first event will ocurr in " << iQ.top()->time << ".  " << endl;
-    cout << "the size of the event queue is " << iQ.size() << endl;
+    cout << "The first event will ocurr in " << iQ.top()->time << ".  " << endl;
+    cout << "The size of the event queue is " << iQ.size() << endl;
     
     while(iQ.top()->time< EndYear +1){                                      // this loop throws up error because no recurrent birthday pushing gt over 5 yrs and iq.pop means gt cannot be updated after pop
         GlobalTime=iQ.top()->time;											// careful with order of global time update - do not touch or touch and check!!
@@ -311,11 +209,11 @@ int main(){
     
     
     //// --- Output the results in a csv file --- ////
+    cout << "Section 7 - We are going to save the output. " << endl;
     FILE* ProjectZim;
     ProjectZim = fopen(OutputFileDirectory.c_str(),"w");
     
-    
-    
+
      for (int i=0; i<total_population; i++) {								// Note: If adding more variables to be output, need to adapt the %x
      fprintf(ProjectZim,"%d, %d, %f, %f, %d, %d, %f, %d, %f, %d, %d, %f, %f, %f, %f, %f, %d, %f, %f, %f, %f, %f, %f, %f, %d, %f, %f, %f, %f, %f, %f, %f, %f, %d, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f \n",
      MyArrayOfPointersToPeople[i]->PersonID,
@@ -368,9 +266,9 @@ int main(){
      );}
      fclose(ProjectZim);
     
-    cout << "MI: " << MyArrayOfPointersToPeople[1]->MI << endl;
     
     // COUNT OUTPUT FOR FITTING
+    cout << "Section 7 - Mortality fitting output. " << endl;
     int count_2016deaths=0;
     int count_causeofdeath[14]={0};
     
@@ -454,9 +352,6 @@ int main(){
     cout << "Least Square " << sum_MinLik << endl;
     
 
-    
-    
-    
     //// --- LETS AVOID MEMORY LEAKS AND DELETE ALL NEW EVENTS --- ////
     cout << "Lets delete the heap! " << endl;
     for(int i=0; i<Events.size()-1; i++){

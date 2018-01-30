@@ -19,6 +19,7 @@
 #include "LoadParams.h"
 #include "HPVInfection.hpp"
 #include "NCD.hpp"
+#include "HIVInfection.hpp"
 
 using namespace std;
 
@@ -34,55 +35,29 @@ extern int      *p_PY;
 extern          person** MyArrayOfPointersToPeople;
 extern          priority_queue<event*, vector<event*>, timeComparison> *p_PQ;
 extern          vector<event*> Events;
+
 extern double   Sex_ratio;
 extern int minAgeBirth;
 extern int maxAgeBirth;
-
-
 extern int      nr_NCDs;                    // NCD parameters
 extern int      nr_Cancers;
-
 extern double   MortAdj;                    // Mortality parameters
-
-extern double   HPV_Prevalence;             // HPV parameters
-extern double   HPV_Screening_coverage;
-extern int HPV_Status_HPV;
-extern int CC_Screening_Count;
-extern int CC_ScreenOutcome;
-extern int CC_CryoOutcome;
-extern double Re_ScreenOn;
-extern double Re_ScreenOn;
-extern int HPV_Status_CIN1;
-extern int HPV_Status_CIN2_3;
-extern int HPV_Status_CIS;
-extern int HPV_Status_ICC;
-extern int HPV_Status_Recovered;
-extern double hpv_date_after_death;
-extern double no_hpv_infection;
 extern int age_atrisk_hpv;
-extern int age_tostart_CCscreening;
 
 //// --- POINTERS TO EXTERNAL ARRAYS --- ////
-extern double** BirthArray;
-extern double** DeathArray_Women;
-extern double** DeathArray_Men;
-
-extern double** HIVArray_Women;
-extern double** HIVArray_Men;
-extern double** NrChildrenArray;
-extern double*  NrChildrenProb;
-extern double** Age1950Array;
 extern int*     ArrayMin;
 extern int*     ArrayMax;
+extern double** DeathArray_Men;
+extern double** NrChildrenArray;
+extern double** BirthArray;
+extern double** DeathArray_Women;
+extern double** Age1950Array;
+extern double*  NrChildrenProb;
+extern double** HIVArray_Women;
+extern double** HIVArray_Men;
 extern double** NCDArray;
-extern int*     NCDAgeArrayMin;
-extern int*     NCDAgeArrayMax;
 extern double** CancerArray;
-extern int*     CancerAgeArrayMin;
-extern int*     CancerAgeArrayMax;
 extern double** HPVarray;
-
-
 
 
 //// --- Important Internal informtaion --- ////
@@ -91,11 +66,8 @@ vector <float> HIVReservoir(0);
 int RandomMinMax(int min, int max){							// Provide function for random number generator between min and max number
     return rand()%(max-min+1)+min;}							// !!!!Note: if min=0 and max=4 it will generate 0,1,2,3,4
 
-int RandomLONGMinMax(long int min, long int max){			// Provide function for random number generator between min and max number
-    return rand()%(max-min+1)+min;}							// !!!!Note: if min=0 and max=4 it will generate 0,1,2,3,4
 
 //// --- CLASS (POPULATION) CONSTRUCTOR --- ////
-
 person::person()											// First 'person' class second constructor/variable and no return type means its a constructor
 {
     PersonID=0;												// --- Basic variable ---
