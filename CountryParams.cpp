@@ -26,7 +26,7 @@ int init_pop;
 int total_population;
 double Sex_ratio;
 extern int factor;
-extern int ageAdult;
+int ageAdult;
 int minAgeBirth;
 int maxAgeBirth;
 
@@ -36,18 +36,18 @@ int ART_start_yr;
 double ARTbuffer;
 
 // HPV parameters
-extern int age_atrisk_hpv;
+int age_atrisk_hpv;
 extern int age_tostart_CCscreening;
-extern double HPV_Prevalence;
-extern int HPV_Status_HPV;
-extern int HPV_Status_CIN1;
-extern int HPV_Status_CIN2_3;
-extern int HPV_Status_CIS;
-extern int HPV_Status_ICC;
-extern int HPV_Status_Recovered;
-extern double hpv_date_after_death;
-extern double no_hpv_infection;
-extern double HPV_Screening_coverage;
+//extern double HPV_Prevalence;
+int HPV_Status_HPV;
+int HPV_Status_CIN1;
+int HPV_Status_CIN2_3;
+int HPV_Status_CIS;
+int HPV_Status_ICC;
+int HPV_Status_Recovered;
+double hpv_date_after_death;
+double no_hpv_infection;
+//extern double HPV_Screening_coverage;
 
 // Directory parameters
 string ParamDirectory;
@@ -71,28 +71,6 @@ extern double MortRisk[6];
 extern double MortRisk_Cancer[5];
 double MortAdj;
 
-// NCD parameters
-double Risk_DiabHC;
-double Risk_DiabHT;
-double Risk_DiabCKD;
-double Risk_DiabCVD;
-double Risk_HCHT;
-double Risk_HCCVD;
-double Risk_HTCKD;
-double Risk_HTCVD;
-
-double Risk_NCD_Diabetes[5];
-double relatedNCDs_Diab[5];
-int nr_NCD_Diab;
-
-double Risk_NCD_HT[3];
-int relatedNCDs_HT[3];
-int nr_NCD_HT;
-
-double Risk_NCD_HC[3];
-int relatedNCDs_HC[3];
-int nr_NCD_HC;
-
 
 /////////////////// FUNCTION: IF LOOP FOR COUNTRY-SPECIFIC PARAMETERS //////////////////////
 void loadCountryParams(int x){
@@ -109,47 +87,6 @@ void loadCountryParams(int x){
         minAgeBirth=15;
         maxAgeBirth=50;
         
-        // NCD parameters
-        Risk_DiabHC=1.12;                                        // Having high cholesterol given diabtes etc ...
-        Risk_DiabHT=1.4;
-        Risk_DiabCKD=1.5;
-        Risk_DiabCVD=2.31;
-        Risk_HCHT=1.277;
-        Risk_HCCVD=1.41;
-        Risk_HTCKD=1.69;
-        Risk_HTCVD=1.26;
-        
-        
-        // Diabetes related NCDs
-        int size_diabetes=5;
-        double Temp1_diab[5]={Risk_DiabHT, Risk_DiabCVD, Risk_DiabCKD, Risk_DiabCVD, Risk_DiabHC};
-        double Temp2_diab[5]={0, 3, 5, 6, 7};
-        for (int i=0; i<size_diabetes; i++){
-            Risk_NCD_Diabetes[i]=Temp1_diab[i];
-            relatedNCDs_Diab[i]=Temp2_diab[i];
-        }
-        nr_NCD_Diab=sizeof(relatedNCDs_Diab)/sizeof(relatedNCDs_Diab[0]);
-        
-        // HT related NCDs
-        int size_HT=3;
-        double Temp1_HT[3]={Risk_HTCVD, Risk_HTCKD, Risk_HTCVD};
-        double Temp2_HT[3]={3, 5, 6};
-        for (int i=0; i<size_HT; i++){
-            Risk_NCD_HT[i]=Temp1_HT[i];
-            relatedNCDs_HT[i]=Temp2_HT[i];
-        }
-        nr_NCD_HT=sizeof(relatedNCDs_HT)/sizeof(relatedNCDs_HT[0]);
-        
-        // HC related NCDs
-        int size_HC=3;
-        double Temp1_HC[3]={Risk_HCHT, Risk_HCCVD, Risk_HCCVD};
-        double Temp2_HC[3]={0, 3, 6};
-        for (int i=0; i<size_HC; i++){
-            Risk_NCD_HC[i]=Temp1_HC[i];
-            relatedNCDs_HC[i]=Temp2_HC[i];
-        }
-        nr_NCD_HC=sizeof(relatedNCDs_HC)/sizeof(relatedNCDs_HC[0]);
-        
         // HIV parameters
         ART_start_yr=2004;
         ARTbuffer=1.01;
@@ -157,8 +94,8 @@ void loadCountryParams(int x){
         // HPV parameters
         age_atrisk_hpv=17;
         age_tostart_CCscreening=25;
-        HPV_Prevalence=0.8;
-        HPV_Screening_coverage=0.03;
+        //HPV_Prevalence=0.8;
+        //HPV_Screening_coverage=0.03;
         //CIN1_Rates[2]= {0.2,0.8};
         //CIN2_3_Rates[2]={0.4,0.6};
         //CIS_Rates[2]={0.65,0.35};
@@ -202,47 +139,6 @@ void loadCountryParams(int x){
         minAgeBirth=15;
         maxAgeBirth=50;
         
-        
-        // NCD parameters
-        Risk_DiabHC=1.12;
-        Risk_DiabHT=1.4;
-        Risk_DiabCKD=1.5;
-        Risk_DiabCVD=2.31;
-        Risk_HCHT=1.277;
-        Risk_HCCVD=1.41;
-        Risk_HTCKD=1.69;
-        Risk_HTCVD=1.26;
-        
-        // Diabetes related NCDs
-        int size_diabetes=5;
-        double Temp1_diab[5]={Risk_DiabHT, Risk_DiabCVD, Risk_DiabCKD, Risk_DiabCVD, Risk_DiabHC};
-        double Temp2_diab[5]={0, 3, 5, 6, 7};
-        for (int i=0; i<size_diabetes; i++){
-            Risk_NCD_Diabetes[i]=Temp1_diab[i];
-            relatedNCDs_Diab[i]=Temp2_diab[i];
-        }
-        nr_NCD_Diab=sizeof(relatedNCDs_Diab)/sizeof(relatedNCDs_Diab[0]);
-        
-        // HT related NCDs
-        int size_HT=3;
-        double Temp1_HT[3]={Risk_HTCVD, Risk_HTCKD, Risk_HTCVD};
-        double Temp2_HT[3]={3, 5, 6};
-        for (int i=0; i<size_HT; i++){
-            Risk_NCD_HT[i]=Temp1_HT[i];
-            relatedNCDs_HT[i]=Temp2_HT[i];
-        }
-        nr_NCD_HT=sizeof(relatedNCDs_HT)/sizeof(relatedNCDs_HT[0]);
-        
-        // HC related NCDs
-        int size_HC=3;
-        double Temp1_HC[3]={Risk_HCHT, Risk_HCCVD, Risk_HCCVD};
-        double Temp2_HC[3]={0, 3, 6};
-        for (int i=0; i<size_HC; i++){
-            Risk_NCD_HC[i]=Temp1_HC[i];
-            relatedNCDs_HC[i]=Temp2_HC[i];
-        }
-        nr_NCD_HC=sizeof(relatedNCDs_HC)/sizeof(relatedNCDs_HC[0]);
-        
         // HIV parameters
         ART_start_yr=2004;
         ARTbuffer=1.01;
@@ -250,8 +146,8 @@ void loadCountryParams(int x){
         // HPV parameters
         age_atrisk_hpv=17;
         age_tostart_CCscreening=25;
-        HPV_Prevalence=0.8;
-        HPV_Screening_coverage=0.03;
+        //HPV_Prevalence=0.8;
+        //HPV_Screening_coverage=0.03;
         //CIN1_Rates[2]= {0.2,0.8};
         //CIN2_3_Rates[2]={0.4,0.6};
         //CIS_Rates[2]={0.65,0.35};
@@ -297,47 +193,6 @@ void loadCountryParams(int x){
         minAgeBirth=15;
         maxAgeBirth=50;
         
-        
-        // NCD parameters
-        Risk_DiabHC=1.12;
-        Risk_DiabHT=1.4;
-        Risk_DiabCKD=1.5;
-        Risk_DiabCVD=2.31;
-        Risk_HCHT=1.277;
-        Risk_HCCVD=1.41;
-        Risk_HTCKD=1.69;
-        Risk_HTCVD=1.26;
-        
-        // Diabetes related NCDs
-        int size_diabetes=5;
-        double Temp1_diab[5]={Risk_DiabHT, Risk_DiabCVD, Risk_DiabCKD, Risk_DiabCVD, Risk_DiabHC};
-        double Temp2_diab[5]={0, 3, 5, 6, 7};
-        for (int i=0; i<size_diabetes; i++){
-            Risk_NCD_Diabetes[i]=Temp1_diab[i];
-            relatedNCDs_Diab[i]=Temp2_diab[i];
-        }
-        nr_NCD_Diab=sizeof(relatedNCDs_Diab)/sizeof(relatedNCDs_Diab[0]);
-        
-        // HT related NCDs
-        int size_HT=3;
-        double Temp1_HT[3]={Risk_HTCVD, Risk_HTCKD, Risk_HTCVD};
-        double Temp2_HT[3]={3, 5, 6};
-        for (int i=0; i<size_HT; i++){
-            Risk_NCD_HT[i]=Temp1_HT[i];
-            relatedNCDs_HT[i]=Temp2_HT[i];
-        }
-        nr_NCD_HT=sizeof(relatedNCDs_HT)/sizeof(relatedNCDs_HT[0]);
-        
-        // HC related NCDs
-        int size_HC=3;
-        double Temp1_HC[3]={Risk_HCHT, Risk_HCCVD, Risk_HCCVD};
-        double Temp2_HC[3]={0, 3, 6};
-        for (int i=0; i<size_HC; i++){
-            Risk_NCD_HC[i]=Temp1_HC[i];
-            relatedNCDs_HC[i]=Temp2_HC[i];
-        }
-        nr_NCD_HC=sizeof(relatedNCDs_HC)/sizeof(relatedNCDs_HC[0]);
-        
         // HIV parameters
         ART_start_yr=2004;
         ARTbuffer=1.01;
@@ -345,8 +200,8 @@ void loadCountryParams(int x){
         // HPV parameters
         age_atrisk_hpv=17;
         age_tostart_CCscreening=25;
-        HPV_Prevalence=0.8;
-        HPV_Screening_coverage=0.03;
+        //HPV_Prevalence=0.8;
+       // HPV_Screening_coverage=0.03;
         //CIN1_Rates[2]= {0.2,0.8};
         //CIN2_3_Rates[2]={0.4,0.6};
         //CIS_Rates[2]={0.65,0.35};
@@ -390,47 +245,6 @@ void loadCountryParams(int x){
         minAgeBirth=15;
         maxAgeBirth=50;
         
-        
-        // NCD parameters
-        Risk_DiabHC=1.12;                                        // Having high cholesterol given diabtes etc ...
-        Risk_DiabHT=1.4;
-        Risk_DiabCKD=1.5;
-        Risk_DiabCVD=2.31;
-        Risk_HCHT=1.277;
-        Risk_HCCVD=1.41;
-        Risk_HTCKD=1.69;
-        Risk_HTCVD=1.26;
-        
-        // Diabetes related NCDs
-        int size_diabetes=5;
-        double Temp1_diab[5]={Risk_DiabHT, Risk_DiabCVD, Risk_DiabCKD, Risk_DiabCVD, Risk_DiabHC};
-        double Temp2_diab[5]={0, 3, 5, 6, 7};
-        for (int i=0; i<size_diabetes; i++){
-            Risk_NCD_Diabetes[i]=Temp1_diab[i];
-            relatedNCDs_Diab[i]=Temp2_diab[i];
-        }
-        nr_NCD_Diab=sizeof(relatedNCDs_Diab)/sizeof(relatedNCDs_Diab[0]);
-        
-        // HT related NCDs
-        int size_HT=3;
-        double Temp1_HT[3]={Risk_HTCVD, Risk_HTCKD, Risk_HTCVD};
-        double Temp2_HT[3]={3, 5, 6};
-        for (int i=0; i<size_HT; i++){
-            Risk_NCD_HT[i]=Temp1_HT[i];
-            relatedNCDs_HT[i]=Temp2_HT[i];
-        }
-        nr_NCD_HT=sizeof(relatedNCDs_HT)/sizeof(relatedNCDs_HT[0]);
-        
-        // HC related NCDs
-        int size_HC=3;
-        double Temp1_HC[3]={Risk_HCHT, Risk_HCCVD, Risk_HCCVD};
-        double Temp2_HC[3]={0, 3, 6};
-        for (int i=0; i<size_HC; i++){
-            Risk_NCD_HC[i]=Temp1_HC[i];
-            relatedNCDs_HC[i]=Temp2_HC[i];
-        }
-        nr_NCD_HC=sizeof(relatedNCDs_HC)/sizeof(relatedNCDs_HC[0]);
-        
         // HIV parameters
         ART_start_yr=2004;
         ARTbuffer=1.01;
@@ -438,8 +252,8 @@ void loadCountryParams(int x){
         // HPV parameters
         age_atrisk_hpv=17;
         age_tostart_CCscreening=25;
-        HPV_Prevalence=0.8;
-        HPV_Screening_coverage=0.03;
+        //HPV_Prevalence=0.8;
+        //HPV_Screening_coverage=0.03;
         //CIN1_Rates[2]= {0.2,0.8};
         //CIN2_3_Rates[2]={0.4,0.6};
         //CIS_Rates[2]={0.65,0.35};

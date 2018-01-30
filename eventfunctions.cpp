@@ -146,7 +146,6 @@ void EventTellNewYear(person *MyPointerToPerson){
                     }
                 }
             }
-            
         }
         
         // Lets update the ART index

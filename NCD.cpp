@@ -60,19 +60,20 @@ extern double Risk_DiabCVD;
 
 extern double Risk_HCHT;
 extern double Risk_HCCVD;
+
 extern double Risk_HTCKD;
 extern double Risk_HTCVD;
 
-extern double Risk_NCD_Diabetes[];
-extern int relatedNCDs_Diab[];
+extern double Risk_NCD_Diabetes[5];
+extern int relatedNCDs_Diab[5];
 extern int nr_NCD_Diab;
 
-extern double Risk_NCD_HT[];
-extern int relatedNCDs_HT[];
+extern double Risk_NCD_HT[3];
+extern int relatedNCDs_HT[3];
 extern int nr_NCD_HT;
 
-extern double Risk_NCD_HC[];
-extern int relatedNCDs_HC[];
+extern double Risk_NCD_HC[3];
+extern int relatedNCDs_HC[3];
 extern int nr_NCD_HC;
 
 
@@ -349,9 +350,7 @@ void EventMyDiabetesDate(person *MyPointerToPerson){
         
         while (ncd_nr<nr_NCD_Diab)
         {
-            
-            //double r =  ((double) rand() / (RAND_MAX)) ;
-            double DateNCD=-997;                                                               
+            double DateNCD=-997;
             double r = randfrom(NCDArray[relatedNCDs_Diab[ncd_nr]][age_index]*Risk_NCD_Diabetes[ncd_nr] ,1*Risk_NCD_Diabetes[ncd_nr] );
             
             // 4.1 // If we are getting an NCD lets get the age and date of NCD
@@ -499,10 +498,6 @@ void EventMyHyptenDate(person *MyPointerToPerson)
                 double YearFraction=(RandomMinMax_2(1,12))/12.1;
                 DateNCD=MyPointerToPerson->DoB+i+YearFraction;
             }
-            
-            cout << "ncd nr " << ncd_nr << endl;
-            cout << "related NCD " << relatedNCDs_HT[ncd_nr] << endl;
-            cout << "risk increase: " << Risk_NCD_HT[ncd_nr] << endl;
             
             // 4.2 Lets see if this pushed forward the existing NCD date
             if (DateNCD>=*p_GT && DateNCD<MyPointerToPerson->NCD_DatesVector.at(relatedNCDs_HT[ncd_nr]))

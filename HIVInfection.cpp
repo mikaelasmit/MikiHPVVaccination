@@ -59,11 +59,11 @@ extern int RandomMinMax_2(int min, int max);
 
 
 /// HIV Increased risk for NCD Parameter ///
-double Risk_HIVHT=1.49;                                 // Increased risk of HT given HIV (and CKD given HIV below) - from Schouten et al CID 2016
-double Risk_HIVCKD=2;
-double Risk_NCDHIV[2]={Risk_HIVHT, Risk_HIVCKD};
-int relatedNCD_HIV[2]={0, 5};
-int nr_NCD_HIV=sizeof(relatedNCD_HIV)/sizeof(relatedNCD_HIV[0]);
+extern double Risk_HIVHT;                                 // Increased risk of HT given HIV (and CKD given HIV below) - from Schouten et al CID 2016
+extern double Risk_HIVCKD;
+extern double Risk_NCDHIV[2];
+extern int relatedNCD_HIV[2];
+extern int nr_NCD_HIV;
 extern int ageAdult;
 
 
@@ -198,7 +198,6 @@ void EventMyHIVInfection(person *MyPointerToPerson){
             // Re-evaluate NCD related to HIV
             while (ncd_nr<nr_NCD_HIV){
                 double r = ((double) rand() / (RAND_MAX));                 // Get a random number for each NCD
-                
                 
                 // If we are getting an NCD lets get age and date
                 if (r<=NCDArray[relatedNCD_HIV[ncd_nr]][120]*Risk_NCDHIV[ncd_nr])             // If they will get and NCD lets get the age and date and also update mortality
@@ -423,7 +422,6 @@ void EventARTCatSwitch(person *MyPointerToPerson){
         if (MyPointerToPerson->ART>0){
             
             if (count_ARTKids>0) {count_ARTKids=count_ARTKids-1;}              // This count how many children are still on ART
-            
             
             if (MyPointerToPerson->Sex==1){
                 count_ARTMen_sum++;                                             // Lets add a count to the adult category

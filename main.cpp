@@ -29,7 +29,8 @@
 using namespace std;
 
 // TIDY UP
-// Clean up NCD risk from NCD.hpp
+// 1. Clean up NCD risk from NCD.hpp
+// 2. Clean up HIV.cpp
 // Clean up person.cpp
 // Add ART events for HPV vacciantion for ART
 // Clean eventfunction
@@ -39,7 +40,8 @@ using namespace std;
 //// --- 1. Choose country --- ////
 int country=1;                  // 1=KENYA      2=ZIMBABWE      3=MALAWI      4=KENYA - UG
 
-//// --- 2. Complete file paths --- ////
+
+//// --- 2. Update file paths --- ////
 string InputFileDirectory="/Users/mc1405/Dropbox/KenyModel_Vacc/HIVModelZimbabwe";
 string OutputFileDirectory="/Users/mc1405/Dropbox/All Work/Ageing in Kenya and Zimbabwe - project/MATLAB_Pablo copy/MATLAB copy/Zimbabwe Results HIV/NCDcheck.csv";
 
@@ -50,11 +52,47 @@ int int_HPVvaccination=1;
 int age_HPVvaccination=9;
 
 
-//// --- 3. Central Model Parameters --- ////
+//// --- 4. Central Model Parameters --- ////
 double StartYear=1950;
 int    EndYear=2035;
-int    factor=100;                 // Ffraction of population run in the mode
+int    factor=100;                  // Ffraction of population run in the mode
 const long long int final_number_people=100000000;
+
+
+double Risk_DiabHC=1.12;            // NCD parameters
+double Risk_DiabHT=1.4;
+double Risk_DiabCKD=1.5;
+double Risk_DiabCVD=2.31;
+double Risk_HCHT=1.277;
+double Risk_HCCVD=1.41;
+double Risk_HTCKD=1.69;
+double Risk_HTCVD=1.26;
+
+double Risk_NCD_Diabetes[5]={Risk_DiabHT, Risk_DiabCVD, Risk_DiabCKD, Risk_DiabCVD, Risk_DiabHC};
+int relatedNCDs_Diab[5]={0, 3, 5, 6, 7};
+int nr_NCD_Diab=sizeof(relatedNCDs_Diab)/sizeof(relatedNCDs_Diab[0]);
+
+double Risk_NCD_HT[3]={Risk_HTCVD, Risk_HTCKD, Risk_HTCVD};
+int relatedNCDs_HT[3]={3, 5, 6};
+int nr_NCD_HT=sizeof(relatedNCDs_HT)/sizeof(relatedNCDs_HT[0]);
+
+double Risk_NCD_HC[3]={Risk_HCHT, Risk_HCCVD, Risk_HCCVD};
+int relatedNCDs_HC[3]={0, 3, 6};
+int nr_NCD_HC=sizeof(relatedNCDs_HC)/sizeof(relatedNCDs_HC[0]);
+
+
+double Risk_HIVHT=1.49;                       // HIV increases NCD risk  - from Schouten et al CID 2016
+double Risk_HIVCKD=2;
+double Risk_NCDHIV[2]={Risk_HIVHT, Risk_HIVCKD};
+int relatedNCD_HIV[2]={0, 5};
+int nr_NCD_HIV=sizeof(relatedNCD_HIV)/sizeof(relatedNCD_HIV[0]);
+extern int ageAdult;
+
+
+double MortRisk[6]= {0, 0, 0.85, 1.3, 1.1, 0.8}; // Mortality parameters//{0.087, 0, 1.4, 670.87, 12.23, 5};
+double MortRisk_Cancer[5]= {1, 1, 1, 1, 1.05};
+// Original values from Smith et al Factors associated with : 1.52 (HT), 1.77 (diabetes)
+//{0.087, 0, 1.4, 670.87, 12.23};   // Both this and above needs to be fitted
 
 
 //// --- Pointers and external information
@@ -82,8 +120,8 @@ extern double Prostate_d;
 extern double OtherCan_d;
 extern double MortAdj;
 
-double MortRisk[6]= {0, 0, 0.85, 1.3, 1.1, 0.8}; //{0.087, 0, 1.4, 670.87, 12.23, 5};         // Original values from Smith et al Factors associated with : 1.52 (HT), 1.77 (diabetes)
-double MortRisk_Cancer[5]= {1, 1, 1, 1, 1.05};                   //{0.087, 0, 1.4, 670.87, 12.23};   // Both this and above needs to be fitted
+
+
 
 
 int main(){
